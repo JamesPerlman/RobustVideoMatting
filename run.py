@@ -6,7 +6,6 @@ import torch
 
 parser = argparse.ArgumentParser(description='RobustVideoMatting')
 parser.add_argument('-i', '--input', type=str, required=True)
-parser.add_argument('-o', '--output', type=str, required=True)
 parser.add_argument('--alpha', action='store_true')
 parser.add_argument('--foreground', action='store_true')
 parser.add_argument('--comp', action='store_true')
@@ -16,11 +15,11 @@ parser.add_argument('--mbps', type=int, default=4)
 args = parser.parse_args()
 
 input_path = Path(args.input)
-output_path = Path(args.output)
+output_path = input_path
 
-output_alpha_path = output_path.parent / f"{output_path.name}-alpha{'' if args.png else output_path.suffix}"
-output_comp_path = output_path.parent / f"{output_path.name}-comp{'' if args.png else output_path.suffix}"
-output_fg_path = output_path.parent / f"{output_path.name}-fg{'' if args.png else output_path.suffix}"
+output_alpha_path = input_path.parent / f"{input_path.stem}-alpha{'' if args.png else input_path.suffix}"
+output_comp_path = input_path.parent / f"{input_path.stem}-comp{'' if args.png else input_path.suffix}"
+output_fg_path = input_path.parent / f"{input_path.stem}-fg{'' if args.png else input_path.suffix}"
 
 model = MattingNetwork('resnet50')
 checkpoint = Path("./models/rvm_resnet50.pth")
